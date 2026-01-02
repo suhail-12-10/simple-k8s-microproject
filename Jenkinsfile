@@ -14,17 +14,6 @@ pipeline {
       }
     }
 
-    stage('Debug Workspace') {
-      steps {
-        sh '''
-          echo "Current directory:"
-          pwd
-          echo "Workspace contents:"
-          ls -l
-        '''
-      }
-    }
-
     stage('Build Docker Image') {
       steps {
         sh '''
@@ -59,3 +48,4 @@ pipeline {
     }
   }
 }
+
