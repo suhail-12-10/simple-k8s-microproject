@@ -17,7 +17,6 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         sh '''
-          eval $(minikube docker-env)
           docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$BUILD_NUMBER backend-service
         '''
       }
