@@ -15,12 +15,13 @@ pipeline {
     }
 
     stage('Build Docker Image') {
-      steps {
-        sh '''
-          docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$BUILD_NUMBER backend-service
-        '''
-      }
-    }
+  steps {
+    sh '''
+      docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$BUILD_NUMBER ./backend-service
+    '''
+  }
+}
+
 
     stage('Push to DockerHub') {
       steps {
