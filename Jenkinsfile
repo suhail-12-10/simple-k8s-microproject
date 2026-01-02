@@ -4,13 +4,21 @@ pipeline {
   environment {
     DOCKERHUB_USER = "suhail4545"
     IMAGE_NAME = "simple-backend"
+    KUBECTL = "/usr/local/bin/kubectl"
+    KUBECONFIG = "/var/lib/jenkins/.kube/config"
   }
 
   stages {
 
-    stage('Checkout') {
+    stage('Preflight Checks') {
       steps {
-        checkout scm
+        sh '''
+          echo "=== Preflight checks ==="
+          which docker
+          docker --version
+          $KUBECTL version --client
+          $KUBECTL get nodes
+        '''
       }
     }
 
@@ -41,11 +49,10 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         sh '''
-          kubectl set image deployment/backend-deployment \
+          $KUBECTL set image deployment/backend-deployment \
           backend=$DOCKERHUB_USER/$IMAGE_NAME:$BUILD_NUMBER
         '''
       }
     }
   }
 }
-
