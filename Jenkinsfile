@@ -2,9 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_USER = "suhail4545"        // your DockerHub username
+    DOCKERHUB_USER = "suhail4545"
     IMAGE_NAME = "simple-backend"
-    PROJECT_DIR = "simple-k8s-microproject"
   }
 
   stages {
@@ -15,10 +14,21 @@ pipeline {
       }
     }
 
+    stage('Debug Workspace') {
+      steps {
+        sh '''
+          echo "Current directory:"
+          pwd
+          echo "Workspace contents:"
+          ls -l
+        '''
+      }
+    }
+
     stage('Build Docker Image') {
       steps {
         sh '''
-          cd $PROJECT_DIR/backend-service
+          cd backend-service
           docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$BUILD_NUMBER .
         '''
       }
